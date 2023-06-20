@@ -69,5 +69,5 @@ public:
 	void setup();
 	void print(Food& food);	// print board, snake and food
 	void input();	// check the button pressing by player
-	void logic(Food& food);
+	void logic(Food** food);
 };

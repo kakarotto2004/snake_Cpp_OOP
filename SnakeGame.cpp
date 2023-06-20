@@ -2,6 +2,23 @@
 
 char board = 219;
 
+Food* food = nullptr;
+
+// Function to generate random food
+Food* generateRandomFood(int width, int height) {
+	int foodType = rand() % 3;
+	switch (foodType) {
+	case 0:
+		return new FoodDollar(width, height);
+	case 1:
+		return new FoodAt(width, height);
+	case 2:
+		return new FoodAmpersand(width, height);
+	default:
+		return nullptr;
+	}
+}
+
 Food::Food(int boardWidth, int boardHeight) {
 	boardWidth = 20 * 2;
 	boardHeight = 20;
@@ -104,7 +121,7 @@ void SnakeGame::input() {
 	}
 }
 
-void SnakeGame::logic(Food& food) {
+void SnakeGame::logic(Food** food) {
 	int previousX = snakeBodyX[0];
 	int previousY = snakeBodyY[0];
 	int prev2X, prev2Y;
@@ -155,10 +172,13 @@ void SnakeGame::logic(Food& food) {
 			gameOver = true;
 	}
 
-	if (snakePosX == food.getPosX() && snakePosY == food.getPosY()) {
+	if (snakePosX == (*food)->getPosX() && snakePosY == (*food)->getPosY()) {
 		snakeLength++;
 		points++;
-		food.generateNewPosition(width, height);
+		delete* food; // Delete old food
+
+		// Generate new food of random type
+		*food = generateRandomFood(width, height);
 	}
 }
 
@@ -176,29 +196,14 @@ int main() {
 
 	if (action == 1) {
 		SnakeGame snake;
-		int foodType = rand() % 3;
-		Food* food = nullptr; // Initialize food pointer as nullptr
+		food = generateRandomFood(snake.getWidth(), snake.getHeight()); // Initial food type
 
-		switch (foodType) {
-		case 0:
-			food = new FoodDollar(snake.getWidth(), snake.getHeight());
-			break;
-		case 1:
-			food = new FoodAt(snake.getWidth(), snake.getHeight());
-			break;
-		case 2:
-			food = new FoodAmpersand(snake.getWidth(), snake.getHeight());
-			break;
-		}
-
-		if (food != nullptr) {
-			snake.setup();
-			while (!snake.isGameOver()) {
-				snake.print(*food);
-				snake.input();
-				snake.logic(*food);
-				Sleep(50);
-			}
+		snake.setup();
+		while (!snake.isGameOver()) {
+			snake.print(*food);
+			snake.input();
+			snake.logic(&food); // Pass pointer to logic function
+			Sleep(50);
 		}
 
 		delete food;
