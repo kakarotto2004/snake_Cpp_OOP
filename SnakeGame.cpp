@@ -1,21 +1,26 @@
 #include "SnakeGame.h"
 
-char board = 219;
 
+// =================  GLOBAL variables  =================
+char board = 219;
 Food* food = nullptr;
+// ======================================================
+
+
+// -------------------------------------------  Food methods  -------------------------------------------
 
 // Function to generate random food
 Food* generateRandomFood(int width, int height) {
 	int foodType = rand() % 3;
 	switch (foodType) {
-	case 0:
-		return new FoodDollar(width, height);
-	case 1:
-		return new FoodAt(width, height);
-	case 2:
-		return new FoodAmpersand(width, height);
-	default:
-		return nullptr;
+		case 0:
+			return new FoodDollar(width, height);
+		case 1:
+			return new FoodAt(width, height);
+		case 2:
+			return new FoodAmpersand(width, height);
+		default:
+			return nullptr;
 	}
 }
 
@@ -36,7 +41,10 @@ void Food::generateNewPosition(int boardWidth, int boardHeight) {
 
 int Food::getPosX() { return posX; }
 int Food::getPosY() { return posY; }
+// ---------------------------------------------------------------------------------------------------
 
+
+// -------------------------------------------  SnakeGame methods  -------------------------------------------
 
 void SnakeGame::setup() {
 	gameOver = false;
@@ -49,6 +57,7 @@ void SnakeGame::setup() {
 	snakePosX = width / 2;
 	snakePosY = height / 2;
 
+	// change vactors sizes to 100
 	snakeBodyX.resize(100);
 	snakeBodyY.resize(100);
 }
@@ -56,8 +65,7 @@ void SnakeGame::setup() {
 void SnakeGame::print(Food& food) {
 	system("cls");
 
-	//char upperBoard = 205;
-
+	// upper board body
 	for (int i = 0; i < width + 2; i++) {
 		cout << board;
 	}
@@ -65,17 +73,19 @@ void SnakeGame::print(Food& food) {
 
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
+			// left side of board
 			if (j == 0) {
 				cout << board;
 			}
 
-			if (i == snakePosY && j == snakePosX) {
+			if (i == snakePosY && j == snakePosX) {	// draw snake head
 				cout << "O";
 			}
-			else if (i == food.getPosY() && j == food.getPosX()) {
+			else if (i == food.getPosY() && j == food.getPosX()) {	// draw food symbol
 				cout << food.getSymbol();
 			}
 			else {
+				// draw snake's tail if his coordinates matches 
 				bool isSnakeTailCoord = false;
 				for (int k = 0; k < snakeLength; k++) {
 					if (j == snakeBodyX[k] && i == snakeBodyY[k]) {
@@ -83,15 +93,18 @@ void SnakeGame::print(Food& food) {
 						isSnakeTailCoord = true;
 					}
 				}
-				if (!isSnakeTailCoord)
+				if (!isSnakeTailCoord)	// draw " " (space) if snake's tail coordinates does not match
 					cout << " ";
 			}
+
+			// left side of board
 			if (j == width - 1)
 				cout << board;
 		}
 		cout << endl;
 	}
 
+	// bottom board body
 	for (int i = 0; i < width + 2; i++) {
 		cout << board;
 	}
@@ -100,7 +113,7 @@ void SnakeGame::print(Food& food) {
 }
 
 void SnakeGame::input() {
-	if (_kbhit()) {
+	if (_kbhit()) {	// check if a key has been pressed on the keyboard
 		switch (_getch()) {
 		case 'w':
 			directions = UP;
@@ -141,22 +154,23 @@ void SnakeGame::logic(Food** food) {
 	}
 
 	switch (directions) {
-	case LEFT:
-		snakePosX--;
-		break;
-	case RIGHT:
-		snakePosX++;
-		break;
-	case UP:
-		snakePosY--;
-		break;
-	case DOWN:
-		snakePosY++;
-		break;
-	default:
-		break;
+		case LEFT:
+			snakePosX--;
+			break;
+		case RIGHT:
+			snakePosX++;
+			break;
+		case UP:
+			snakePosY--;
+			break;
+		case DOWN:
+			snakePosY++;
+			break;
+		default:
+			break;
 	}
 
+	// snake can go through the walls
 	if (snakePosX >= width)
 		snakePosX = 0;
 	else if (snakePosX < 0)
@@ -167,11 +181,13 @@ void SnakeGame::logic(Food** food) {
 	else if (snakePosY < 0)
 		snakePosY = height - 1;
 
+	// chceck does snake eats himself
 	for (int i = 0; i < snakeLength; i++) {
 		if (snakeBodyX[i] == snakePosX && snakeBodyY[i] == snakePosY)
 			gameOver = true;
 	}
 
+	// check does the snake eats the food
 	if (snakePosX == (*food)->getPosX() && snakePosY == (*food)->getPosY()) {
 		snakeLength++;
 		points++;
@@ -181,9 +197,47 @@ void SnakeGame::logic(Food** food) {
 		*food = generateRandomFood(width, height);
 	}
 }
+// ---------------------------------------------------------------------------------------------------
 
-void howToPlay();
 
+// --------------------------------------------  functions  ------------------------------------------
+void howToPlay() {
+	system("cls");
+	cout << "\nIt's realy easy\n";
+	cout << "All you have to do is move your snake and eat food\n\n";
+	cout << "How to move:\n";
+	cout << "w - up\na - left\ns - down\nd - right\n";
+	cout << "ESC - ends the game\n";
+}
+
+int difficultyLevel() {
+	int level, defecaulty;
+	system("cls");
+	cout << "Choose defecaulty level:\n";
+	cout << "1. SLOW\n";
+	cout << "2. NORMAL\n";
+	cout << "3. FAST\n";
+	cin >> level;
+
+	if (level == 1) {
+		defecaulty = 120;
+	}
+	else if (level == 2) {
+		defecaulty = 30;
+	}
+	else if (level == 3) {
+		defecaulty = 10;
+	}
+	else {
+		defecaulty = 30;
+	}
+
+	return defecaulty;
+}
+// ---------------------------------------------------------------------------------------------------
+
+
+// ================================================ MAIN  ================================================
 int main() {
 	int action;
 
@@ -195,6 +249,8 @@ int main() {
 	cin >> action;
 
 	if (action == 1) {
+		int difficulty = difficultyLevel();
+
 		SnakeGame snake;
 		food = generateRandomFood(snake.getWidth(), snake.getHeight()); // Initial food type
 
@@ -203,7 +259,7 @@ int main() {
 			snake.print(*food);
 			snake.input();
 			snake.logic(&food); // Pass pointer to logic function
-			Sleep(50);
+			Sleep(difficulty);
 		}
 
 		delete food;
@@ -222,13 +278,4 @@ int main() {
 	}
 
 	return 0;
-}
-
-void howToPlay() {
-	system("cls");
-	cout << "\nIt's realyy easy\n";
-	cout << "All you have to do is move your snake and eat food\n\n";
-	cout << "How to move:\n";
-	cout << "w - up\na - left\ns - down\nd - right\n";
-	cout << "ESC - ends the game\n";
 }
