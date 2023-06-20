@@ -1,4 +1,18 @@
-# snake_Cpp_OOP
+# Gra Snake
+
+--------
+
+## Opis:
+Snake – gra komputerowa, w której gracz za pomocą klawiszy strzałek steruje wężem. Wąż porusza się w zamkniętym prostokącie/kwadracie i nie może „uderzyć” w samego siebie. Zadaniem gracza jest zdobycie jak największej liczby punktów, poprzez karmienie węża pojawiającym się na ekranie pokarmem.
+
+## Założenia gry:
+* Nie ma limitu czasowego
+* Plansza jest ograniczona do prostokąta lub kwadratu ograniczonego ścianami
+* Wąż nie może uderzyć w samego siebie
+* Wąż porusza się ze stałą prędkością
+* Po najechaniu na pokarm gracz otrzymuje 1 punkt, a jego waż staje się większy
+* Wężem steruje się za pomocą przycisków ‘w’ ‘a’ ‘s’ ‘d’
+* Gra kończy się w momencie gdy wąż uderzy w samego siebie
 
 --------
 
@@ -7,6 +21,8 @@ Projekt składa się z dwóch plików:
 2. SnakeGame.cpp: Plik implementacyjny zawierający definicje funkcji.
 
 --------
+
+![image](https://github.com/kakarotto2004/snake_Cpp_OOP/assets/126653764/b1caad31-c735-4be4-b1a5-30c5843ffb70)
 
 # Klasy:
 ## Food:
@@ -52,3 +68,18 @@ Projekt składa się z dwóch plików:
 
 ## main():
 * jest główną funkcją programu. Wyświetla menu, obsługuje wybór gracza i uruchamia grę.
+
+--------
+
+# Założenia funkcjonalne:
+* Gracz może poruszać wężem w górę, w dół, w lewo i w prawo na planszy.
+* Wąż powinien rosnąć o jeden segment po zjedzeniu jedzenia.
+* Jeśli głowa węża zderzy się z jakimkolwiek segmentem swojego ciała, gra kończy się.
+* Wyświetlanie planszy gry, węża, jedzenia i punktacji.
+* Wygenerowanie nowego jedzenia po zjedzeniu poprzedniego.
+
+# Założenia niefunkcjonalne:
+* Interfejs użytkownika: Interfejs gry powinien być intuicyjny i łatwy w obsłudze, umożliwiając płynną i przyjemną rozgrywkę.
+* Przenośność: Gra powinna być przenośna i kompatybilna z różnymi platformami, takimi jak Windows, macOS i Linux, aby użytkownicy mogli cieszyć się grą na swoich preferowanych systemach operacyjnych.
+* Bezpieczeństwo: Implementacja gry powinna być wolna od podatności na ataki i błędy, aby zapewnić bezpieczne środowisko rozgrywki dla graczy.
+* Dokumentacja: Implementacja gry powinna być udokumentowana, zawierając komentarze w kodzie, instrukcje użytkowania i ewentualnie instrukcje instalacji, aby ułatwić zrozumienie i użytkowanie gry przez inne osoby.
